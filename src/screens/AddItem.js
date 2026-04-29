@@ -10,7 +10,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Slider from '@react-native-slider/slider';
+import Slider from '@react-native-community/slider';
 import { addItem } from '../../db/items';
 import { useStore } from '../store';
 import { generateId } from '../utils/helpers';
