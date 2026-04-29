@@ -141,7 +141,7 @@ This repository contains an Expo React Native frontend and a lightweight Python 
 
 ## Frontend — Quick start (Expo)
 
-1. Install dependencies
+### Step 1: Install dependencies
 
 ```bash
 cd Closet-Companion
@@ -149,20 +149,96 @@ npm install
 # or: yarn install
 ```
 
-2. Start the Expo dev server
+### Step 2: Start the Expo dev server
 
 ```bash
 npm start
 # or: expo start
 ```
 
-3. Run on a device or emulator
+You should see a QR code in the terminal.
 
-- For iOS simulator (macOS): `npm run ios`
-- For Android emulator or device: `npm run android`
+### Step 3: Run on a device or emulator
+
+**Option A: Use Expo Go app (recommended for quick testing)**
+- Install the "Expo Go" app on your phone (iOS App Store or Google Play)
+- Scan the QR code displayed in the terminal with your phone's camera
+- The app will load in Expo Go
+
+**Option B: Use an emulator**
+- For iOS simulator (macOS): press `i` in terminal, or `npm run ios`
+- For Android emulator or device: press `a` in terminal, or `npm run android`
 
 Notes:
 - The app initializes a local SQLite database (`db/client.js`) on first run. No manual DB setup required for the frontend.
+- The app is fully functional offline; the backend is optional.
+
+## App Walkthrough — How to use Closet Companion
+
+Once the app launches, you'll see a **bottom navigation bar with 5 tabs**. Here's what each screen does:
+
+### 🏠 **Home (Dashboard)**
+The hub of the app showing:
+- **Quick stats**: Total items, items worn recently, laundry status
+- **Add Item button** (+): Tap to add a new clothing item
+  - Take or upload a photo
+  - Add details: name, category (tops, bottoms, outerwear, etc.), color, size, brand
+  - Optionally tag with AI (on-device classification)
+  - Save to your closet
+
+### 👚 **Closet**
+Your wardrobe catalog:
+- **Browse all items**: Tap any item to view details, edit, or mark as dirty/clean
+- **Add more items**: Tap the + button to add new pieces
+- **Item detail view**: See full info, wear history, and laundry status
+- Grid view shows:
+  - Item photo
+  - Name and category
+  - Wear count (how many times worn)
+  - Laundry status (clean/dirty indicator)
+
+### ✨ **Suggestions**
+AI-powered outfit recommendations:
+- **Get suggestions**: App suggests outfit combinations based on your items
+- **Compare options**: A/B view lets you choose between different outfit pairings
+- **Feedback**: Rate suggestions as helpful or not to improve future recommendations
+- **Smart rules**: Considers item types (e.g., suggests bottoms with tops automatically)
+
+### 📊 **Insights**
+Analytics and wardrobe health:
+- **Wear frequency**: See which items you wear most (and which are gathering dust)
+- **Underused items**: Identify pieces worn less than 3 times
+- **Laundry status**: Overview of clean vs dirty items
+- **Donation suggestions**: App suggests items that might be good to donate based on wear patterns
+- **Color & category breakdown**: Visual charts of your wardrobe composition
+
+### 🛍️ **Shopping**
+Shopping assistant and gap detection:
+- **Gaps**: App identifies missing item categories or color combinations in your wardrobe
+- **Compatibility checks**: See which new items would pair well with existing pieces
+- **Shopping list**: Plan purchases based on suggestions
+
+---
+
+## Typical user flows:
+
+**First Time:**
+1. Launch app (creates local database)
+2. Go to **Home** → tap **+ Add Item**
+3. Add 3–5 clothing items to build your closet
+
+**Next Session:**
+1. Check **Home** for quick stats
+2. Go to **Closet** to review items or add more
+3. Go to **Suggestions** to get an outfit recommendation
+4. Go to **Insights** to see which items you're wearing most
+
+**When laundry day arrives:**
+1. Go to **Closet**
+2. Tap on a dirty item and mark it "clean" (or vice versa)
+3. Return to **Home** to see updated clean/dirty count
+
+---
 
 ## Backend (optional) — Quick start (FastAPI example)
 
