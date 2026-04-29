@@ -1,0 +1,668 @@
+NOTE: This is a mobile app prototype that would ideally work on a mobile phone but also needs to show on the web, it is important to maintain phone size and shape formatting. Ideally the phone outline will be present on the web version and fit perfectly on the mobile version
+
+1.1 High-Level Architecture
+
+Mobile-First, Offline-First, On-Device AI System
+
+Core Layers:
+
+Presentation Layer (Mobile App)
+React Native (recommended) or Flutter
+Handles UI, state, and interactions
+Application Layer
+Business logic
+Outfit engine
+Feedback processing
+Local rules engine
+AI Layer (On-Device)
+Image classification
+Recommendation model
+Behavioral learning system
+Data Layer (Local First)
+Local database (SQLite)
+File storage (images)
+Cached models
+Optional Cloud Layer (Future)
+Sync
+Backup
+Model updates
+1.2 Architecture Diagram (Textual)
+
+Mobile App
+│
+├── UI Layer
+│ ├── Dashboard
+│ ├── Closet
+│ ├── Suggestions
+│ ├── Insights
+│ ├── Shopping
+│
+├── State Management Layer
+│
+├── Core Logic Layer
+│ ├── Outfit Engine
+│ ├── Laundry Engine
+│ ├── Insight Engine
+│ ├── Shopping Engine
+│
+├── AI Layer (On-Device)
+│ ├── Vision Model (Clothing Tagging)
+│ ├── Recommendation Model
+│ ├── Feedback Learning Module
+│
+├── Local Database (SQLite)
+│
+└── Device APIs
+├── Camera
+├── Photo Library
+├── Location (Weather)
+├── Storage
+
+1.3 Key Architectural Principles
+Offline-first functionality
+AI inference on-device
+Modular feature separation
+Event-driven updates (user actions trigger learning)
+Expandable to cloud later
+PHASE 2: DATA MODELS
+2.1 Clothing Item Schema
+
+Item:
+
+id
+image_uri
+category (top, bottom, etc.)
+subcategory
+color
+fabric
+season
+occasion_tags[]
+comfort_rating (1–5)
+wear_count
+last_worn_date
+laundry_status (clean, dirty, unavailable)
+favorite_score (derived)
+created_at
+2.2 Outfit Schema
+
+Outfit:
+
+id
+item_ids[]
+weather_tag
+occasion_tag
+comfort_score
+user_feedback[]
+created_at
+2.3 User Schema
+
+User:
+
+id
+profile_data
+preferences
+temperature_bias (runs hot/cold)
+style_profile
+habit_patterns
+feedback_history[]
+2.4 Feedback Schema
+
+Feedback:
+
+id
+outfit_id
+tags:
+too_hot
+too_cold
+uncomfortable
+wrong_occasion
+not_interested
+timestamp
+2.5 Laundry Schema
+
+Laundry:
+
+item_id
+status
+date_marked_dirty
+date_cleaned
+PHASE 3: AI PIPELINE
+3.1 Image Processing Pipeline
+
+Input:
+User photo (camera or upload)
+
+Pipeline:
+
+Image validation (lighting + background)
+Preprocessing (resize, normalize)
+Classification model:
+clothing type
+color detection
+fabric estimation
+Tag generation
+Store structured item
+3.2 Recommended Models
+MobileNetV3 (lightweight vision)
+EfficientNet-lite
+Hugging Face clothing classifiers
+3.3 Outfit Recommendation Engine
+
+Inputs:
+
+Weather
+Schedule/habits
+Clothing availability
+Comfort ratings
+Feedback history
+
+Logic Layers:
+
+Rule-based filtering
+Scoring system
+Diversity balancing
+Feedback weighting
+
+Output:
+
+Outfit A
+Outfit B
+3.4 Learning System
+Reinforcement from feedback buttons
+Passive learning:
+wear frequency
+skipped items
+Adjust weights dynamically:
+comfort > weather > style > trend
+PHASE 4: FEATURE MODULES
+4.1 Dashboard Module
+
+Components:
+
+Weather widget
+Event + habit tracker
+Closet preview grid
+Laundry summary
+Routine insights
+4.2 Closet Module
+Grid layout
+Category filtering
+Item detail expansion
+Add/edit items
+AI tagging integration
+4.3 Suggestion Module
+A/B outfit comparison
+Feedback controls
+Refresh system
+AI reasoning (expandable)
+4.4 Insights Module
+Wear analytics
+Underused detection
+Overuse alerts
+Swipe-to-donate system
+Achievements system
+4.5 Shopping Module
+Gap detection engine
+Compatibility checker
+Barcode scanner
+Outfit simulation
+Budget filter
+PHASE 5: UX FLOW MAPS
+5.1 Morning Flow
+
+Open App →
+Dashboard →
+Browse Closet →
+Go to Suggestions →
+Select Outfit →
+Confirm →
+Items marked dirty
+
+5.2 Add Clothing Flow
+
+Camera/Open Gallery →
+Upload Image →
+AI Tagging →
+User Confirms →
+Saved to Closet
+
+5.3 Shopping Flow
+
+Scan Barcode →
+Analyze Item →
+Compare with Closet →
+Show Outfit Matches →
+Warn duplicates →
+Suggest purchase decision
+
+PHASE 6: UI COMPONENT SYSTEM
+Core Components
+Card (large, modular)
+Item Tile (grid element)
+Outfit Card (comparison)
+Toggle Chips (feedback)
+Expandable Section
+Swipe Cards (donate system)
+Input Bar (user intent)
+Slider (budget, temp bias)
+Interaction Patterns
+Tap → expand
+Swipe → action
+Long press → edit
+Toggle → feedback learning
+PHASE 7: DESIGN SYSTEM FILE STRUCTURE
+
+styles/
+
+colors.js
+typography.js
+spacing.js
+shadows.js
+
+components/
+
+Card.js
+Button.js
+Grid.js
+Modal.js
+
+screens/
+
+Dashboard.js
+Closet.js
+Suggestions.js
+Insights.js
+Shopping.js
+
+No inline styling allowed.
+
+PHASE 8: TECH STACK RECOMMENDATIONS
+
+Frontend:
+
+React Native (Expo)
+
+State Management:
+
+Zustand or Redux Toolkit
+
+Database:
+
+SQLite (via Expo SQLite)
+
+AI:
+
+TensorFlow Lite
+ONNX Runtime Mobile
+
+Image Processing:
+
+OpenCV Lite (optional)
+
+APIs:
+
+Weather: Open-Meteo (free)
+Barcode: ML Kit
+PHASE 9: BUILD ROADMAP
+STEP 1: Foundation
+Set up React Native project
+Implement navigation
+Create design system
+STEP 2: Data Layer
+Build SQLite schema
+Create data access layer
+STEP 3: Closet System
+Add item manually
+Grid UI
+Item detail view
+STEP 4: AI Tagging (Basic)
+Integrate image classifier
+Auto-tag items
+STEP 5: Suggestion Engine V1
+Rule-based outfit generator
+A/B comparison UI
+STEP 6: Weather Integration
+Fetch weather data
+Apply filters
+STEP 7: Laundry System
+Track worn items
+Update availability
+STEP 8: Feedback Learning
+Add feedback buttons
+Store responses
+Adjust scoring
+STEP 9: Insights System
+Wear tracking analytics
+Donation swipe
+STEP 10: Shopping System (Basic)
+Gap detection
+Static recommendations
+STEP 11: Optimization
+Improve AI scoring
+Improve UI polish
+Performance tuning
+STEP 12: Future Expansion
+Multi-item detection
+Cloud sync
+Advanced ML personalization
+FINAL NOTE FROM THE PLANNING AGENT
+
+This system is:
+
+Technically feasible
+Scalable
+Optimized for mobile constraints
+Designed for incremental AI improvement
+
+The most critical success factors:
+
+Clean data structure
+Strong feedback loop
+Lightweight AI models
+UX simplicity with depth
+
+JIRA FEATURE TICKETS TO USE TO CREATE WORKING FEATURES IN THIS PROJECT: PLEASE FILL IN THE SKELETON WE CREATED BASED ON THSES TICKETS
+
+EPIC 1: FOUNDATION & PROJECT SETUP
+TICKET 1.1 – Initialize Mobile Project
+
+Description:
+Set up base React Native (Expo) project with required dependencies.
+
+Tasks:
+
+Initialize Expo app
+Install navigation libraries
+Install Zustand (state)
+Install SQLite
+Install camera + image picker
+
+Acceptance Criteria:
+
+App runs on iOS + Android
+Navigation works without errors
+TICKET 1.2 – Project Folder Architecture
+
+Description:
+Create scalable folder structure.
+
+Tasks:
+
+Create src directory
+Add folders: components, screens, store, database, services, ai, styles
+
+Acceptance Criteria:
+
+Clean import paths
+No unused folders
+TICKET 1.3 – Navigation System
+
+Description:
+Implement bottom tab navigation.
+
+Tabs:
+
+Dashboard
+Closet
+Suggestions
+Insights
+Shopping
+
+Acceptance Criteria:
+
+Tabs switch smoothly
+Each tab loads placeholder screen
+EPIC 2: DESIGN SYSTEM (NO INLINE STYLING)
+TICKET 2.1 – Color System File
+
+Description:
+Create centralized color tokens.
+
+Acceptance Criteria:
+
+All colors match provided palette
+No hardcoded colors used anywhere else
+TICKET 2.2 – Typography System
+
+Description:
+Define font sizes, weights, hierarchy.
+
+TICKET 2.3 – Spacing & Layout System
+
+Description:
+Standardize padding, margins, grid spacing.
+
+TICKET 2.4 – Core UI Components
+
+Description:
+Build reusable components.
+
+Components:
+
+Card
+Button
+Grid Tile
+Modal
+Expandable Section
+
+Acceptance Criteria:
+
+No inline styles
+Fully reusable
+EPIC 3: DATABASE & DATA LAYER
+TICKET 3.1 – SQLite Setup
+
+Description:
+Initialize local database.
+
+TICKET 3.2 – Clothing Item Schema
+
+Fields:
+
+id
+image
+category
+color
+fabric
+season
+occasion_tags
+comfort_rating
+wear_count
+laundry_status
+TICKET 3.3 – Outfit Schema
+TICKET 3.4 – Feedback Schema
+TICKET 3.5 – CRUD Functions
+
+Description:
+Create functions for:
+
+Add item
+Update item
+Fetch items
+Delete item
+EPIC 4: CLOSET SYSTEM
+TICKET 4.1 – Closet Grid UI
+
+Description:
+Display all clothing items in grid layout.
+
+TICKET 4.2 – Category Filtering
+
+Categories:
+
+Tops
+Bottoms
+Shoes
+Jackets
+Accessories
+TICKET 4.3 – Item Detail View
+
+Description:
+Expand item on click.
+
+TICKET 4.4 – Add Item (Manual Entry)
+
+Description:
+User inputs clothing data manually.
+
+TICKET 4.5 – Image Upload (Camera + Gallery)
+
+Description:
+Allow adding item via image.
+
+EPIC 5: AI TAGGING SYSTEM
+TICKET 5.1 – Image Preprocessing
+
+Description:
+Validate lighting and background.
+
+TICKET 5.2 – Clothing Classification Model Integration
+
+Description:
+Integrate lightweight model (MobileNet/EfficientNet).
+
+TICKET 5.3 – Auto Tagging Pipeline
+
+Outputs:
+
+Category
+Color
+Fabric
+TICKET 5.4 – User Confirmation UI
+
+Description:
+User edits AI-generated tags.
+
+EPIC 6: SUGGESTION ENGINE
+TICKET 6.1 – Outfit Generation Logic (V1)
+
+Description:
+Rule-based outfit creation.
+
+TICKET 6.2 – A/B Outfit UI
+
+Description:
+Display two outfit options.
+
+TICKET 6.3 – Feedback Buttons
+
+Options:
+
+Too hot
+Too cold
+Uncomfortable
+Wrong occasion
+Not interested
+TICKET 6.4 – Refresh Suggestions
+
+Description:
+Regenerate outfits based on feedback.
+
+TICKET 6.5 – Temperature Preference Toggle
+
+Description:
+User sets hot/cold bias.
+
+TICKET 6.6 – AI Reasoning Panel
+
+Description:
+Expandable explanation for suggestions.
+
+EPIC 7: WEATHER INTEGRATION
+TICKET 7.1 – Weather API Integration
+
+Description:
+Fetch current + forecast.
+
+TICKET 7.2 – Weather-Based Filtering
+
+Description:
+Filter outfit options by temperature.
+
+EPIC 8: LAUNDRY SYSTEM
+TICKET 8.1 – Mark Items as Worn
+
+Description:
+Triggered when user selects outfit.
+
+TICKET 8.2 – Laundry Status Tracking
+
+States:
+
+Clean
+Dirty
+Unavailable
+TICKET 8.3 – Laundry Dashboard Widget
+
+Description:
+Display counts of clean vs dirty items.
+
+EPIC 9: INSIGHTS SYSTEM
+TICKET 9.1 – Wear Tracking Engine
+TICKET 9.2 – Most/Least Worn Analysis
+TICKET 9.3 – Unused Item Alerts
+
+Trigger: 30+ days not worn
+
+TICKET 9.4 – Swipe to Donate UI
+TICKET 9.5 – Achievements System
+
+Examples:
+
+Frequent wearing
+Trying new items
+Laundry consistency
+EPIC 10: SHOPPING SYSTEM
+TICKET 10.1 – Gap Detection Logic
+TICKET 10.2 – Recommendation Engine (Basic)
+TICKET 10.3 – Barcode Scanner Integration
+TICKET 10.4 – Compatibility Checker
+
+Output:
+
+Outfit matches
+Duplicate warning
+Usage likelihood
+TICKET 10.5 – Budget Filter Slider
+EPIC 11: STATE MANAGEMENT
+TICKET 11.1 – Global Store Setup (Zustand)
+TICKET 11.2 – Closet State Management
+TICKET 11.3 – Outfit State Management
+TICKET 11.4 – Feedback State Management
+EPIC 12: AI LEARNING SYSTEM
+TICKET 12.1 – Feedback Storage
+TICKET 12.2 – Preference Weighting Logic
+
+Priority Order:
+
+Comfort
+Weather
+Occasion
+Style
+TICKET 12.3 – Adaptive Recommendation Updates
+EPIC 13: UX FLOWS
+TICKET 13.1 – Morning Flow Optimization
+TICKET 13.2 – Add Item Flow
+TICKET 13.3 – Shopping Scan Flow
+EPIC 14: PERFORMANCE & OFFLINE
+TICKET 14.1 – Offline Mode Handling
+TICKET 14.2 – Local Caching
+TICKET 14.3 – Image Storage Optimization
+EPIC 15: POLISH & QA
+TICKET 15.1 – UI Consistency Pass
+TICKET 15.2 – Performance Optimization
+TICKET 15.3 – Bug Fixing & Stability
+FINAL PRIORITIZATION (CRITICAL PATH)
+
+Build in this order:
+
+Foundation + Navigation
+Design System
+Database
+Closet System
+Suggestion Engine (basic)
+Weather
+Laundry
+Feedback Loop
+Insights
+Shopping
