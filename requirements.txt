@@ -1,0 +1,71 @@
+# Requirements for Closet Companion
+# This file lists recommended dependencies for both the optional Python backend
+# and the Expo React Native frontend. It is a reference: use the appropriate
+# package manager for each section (`pip` for Python, `npm`/`yarn` for frontend).
+
+## Python backend (pip - save to a virtual environment)
+# Example: python -m venv .venv && .venv\Scripts\activate
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+sqlalchemy
+alembic
+databases
+httpx
+python-multipart
+passlib[bcrypt]
+python-jose
+typing-extensions
+aioredis
+
+## Frontend (Node / Expo) - npm packages
+# Install with npm or yarn. Example:
+# npm install expo react react-dom react-native expo-cli expo-sqlite @react-navigation/native @react-navigation/bottom-tabs react-native-safe-area-context react-native-screens
+
+# Core Expo + RN
+expo
+react
+react-native
+expo-cli
+
+# Navigation
+@react-navigation/native
+@react-navigation/bottom-tabs
+react-native-safe-area-context
+react-native-screens
+react-native-gesture-handler
+react-native-reanimated
+
+# SQLite / storage
+expo-sqlite
+
+# Camera / images
+expo-image-picker
+expo-camera
+
+# AI / ML (optional - on-device)
+@tensorflow/tfjs
+@tensorflow/tfjs-react-native
+
+# Barcode / scanning
+expo-barcode-scanner
+
+# Utilities (optional)
+axios
+lodash
+uuid
+
+## Quick install commands
+# Frontend (npm)
+# npm install expo react react-native expo-cli expo-sqlite @react-navigation/native @react-navigation/bottom-tabs react-native-safe-area-context react-native-screens react-native-gesture-handler react-native-reanimated expo-image-picker expo-camera expo-barcode-scanner @tensorflow/tfjs @tensorflow/tfjs-react-native axios lodash uuid
+
+# Backend (pip)
+# pip install -r requirements.txt
+
+## Notes
+- The frontend uses the Node ecosystem (`npm` / `yarn`). The `package.json` in
+  the repo contains minimal dependency hints; use the list above to add any
+  libraries you need for features like camera, ML, or barcode scanning.
+- The backend package list is a recommended starting point for a FastAPI
+  server (optional). Trim packages to what you actually use.

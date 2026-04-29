@@ -5,12 +5,20 @@ import Closet from '../screens/Closet';
 import Suggestions from '../screens/Suggestions';
 import Insights from '../screens/Insights';
 import Shopping from '../screens/Shopping';
+import colors from '../styles/colors';
 
 const Tab = createBottomTabNavigator();
 
 export default function Navigation() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { backgroundColor: colors.navy, borderTopColor: colors.divider },
+        tabBarActiveTintColor: colors.salmon,
+        tabBarInactiveTintColor: colors.textSecondary
+      }}
+    >
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Closet" component={Closet} />
       <Tab.Screen name="Suggestions" component={Suggestions} />
