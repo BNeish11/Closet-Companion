@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { getItems, getItemsByCategory } from '../../db/items';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import colors from '../styles/colors';
@@ -17,14 +20,16 @@ import typography from '../styles/typography';
 
 const { width } = Dimensions.get('window');
 
-// Mock data
-const gapAnalysis = [
-  { category: 'Tops', owned: 15, recommended: 12, gap: -3, priority: 'full' },
-  { category: 'Bottoms', owned: 5, recommended: 8, gap: 3, priority: 'high' },
-  { category: 'Shoes', owned: 4, recommended: 6, gap: 2, priority: 'high' },
-  { category: 'Jackets', owned: 2, recommended: 4, gap: 2, priority: 'medium' },
-  { category: 'Accessories', owned: 8, recommended: 10, gap: 2, priority: 'low' }
-];
+// Recommended quantity per category
+const RECOMMENDED_QUANTITIES = {
+  'Tops': 12,
+  'Bottoms': 8,
+  'Shoes': 6,
+  'Jackets': 4,
+  'Accessories': 10
+};
+
+const CATEGORIES = ['Tops', 'Bottoms', 'Shoes', 'Jackets', 'Accessories'];
 
 const recommendations = [
   {
@@ -66,8 +71,49 @@ const recommendations = [
 ];
 
 export default function Shopping() {
+  const [loading, setLoading] = useState(false);
   const [budget, setBudget] = useState(150);
   const [expandedGapIndex, setExpandedGapIndex] = useState(null);
+  const [gapAnalysis, setGapAnalysis] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      analyzeGaps();
+    }, [])
+  );
+
+  const analyzeGaps = async () => {
+    setLoading(true);
+    try {
+      const gaps = [];
+      for (const category of CATEGORIES) {
+        const items = await getItemsByCategory(category);
+        const owned = items.length;
+        const recommended = RECOMMENDED_QUANTITIES[category] || 8;
+        const gap = recommended - owned;
+
+        let priority = 'low';
+        if (gap > 0) {
+          priority = gap >= 3 ? 'high' : 'medium';
+        } else {
+          priority = 'full';
+        }
+
+        gaps.push({
+          category,
+          owned,
+          recommended,
+          gap,
+          priority
+        });
+      }
+      setGapAnalysis(gaps);
+    } catch (err) {
+      console.error('Error analyzing gaps:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredRecommendations = recommendations.filter(item => item.price <= budget);
 
@@ -184,6 +230,16 @@ export default function Shopping() {
       />
     </Card>
   );
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.accentAction} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -304,6 +360,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.primary
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header: {
     paddingHorizontal: spacing.container.default,

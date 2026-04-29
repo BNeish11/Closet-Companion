@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { getMostWornItems, getUnusedItems, getItems, deleteItem } from '../../db/items';
+import { useStore } from '../store';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import ItemTile from '../components/ItemTile';
@@ -18,29 +22,6 @@ import typography from '../styles/typography';
 
 const { width } = Dimensions.get('window');
 
-// Mock analytics data
-const wearData = [
-  { day: 'Mon', count: 3 },
-  { day: 'Tue', count: 2 },
-  { day: 'Wed', count: 4 },
-  { day: 'Thu', count: 2 },
-  { day: 'Fri', count: 5 },
-  { day: 'Sat', count: 3 },
-  { day: 'Sun', count: 1 }
-];
-
-const mostWornItems = [
-  { id: '1', category: 'Tops', color: 'White', wearCount: 24 },
-  { id: '2', category: 'Bottoms', color: 'Blue', wearCount: 18 },
-  { id: '3', category: 'Shoes', color: 'Black', wearCount: 15 }
-];
-
-const unusedItems = [
-  { id: '4', category: 'Jacket', color: 'Leather', daysUnused: 45 },
-  { id: '5', category: 'Tops', color: 'Silk', daysUnused: 60 },
-  { id: '6', category: 'Shoes', color: 'Heels', daysUnused: 90 }
-];
-
 const achievements = [
   { id: 1, title: 'Frequent Wearer', icon: '👕', unlocked: true, requirement: '50+ wears' },
   { id: 2, title: 'Adventurous', icon: '✨', unlocked: true, requirement: '10+ unique outfits' },
@@ -49,14 +30,75 @@ const achievements = [
 ];
 
 export default function Insights() {
+  const [loading, setLoading] = useState(false);
+  const [wearData, setWearData] = useState([]);
+  const [mostWornItems, setMostWornItems] = useState([]);
+  const [unusedItems, setUnusedItems] = useState([]);
   const [donateIndex, setDonateIndex] = useState(0);
   const [donatedItems, setDonatedItems] = useState([]);
+  const { removeItem } = useStore();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadAnalytics();
+    }, [])
+  );
+
+  const loadAnalytics = async () => {
+    setLoading(true);
+    try {
+      const items = await getItems();
+      const mostWorn = await getMostWornItems(5);
+      const unused = await getUnusedItems();
+
+      setMostWornItems(mostWorn);
+      setUnusedItems(unused);
+
+      // Build wear data for last 7 days
+      const wearByDay = buildWearData(items);
+      setWearData(wearByDay);
+    } catch (err) {
+      console.error('Error loading analytics:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const buildWearData = (items) => {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const today = new Date();
+    const wearCounts = {};
+
+    days.forEach((_, idx) => {
+      wearCounts[idx] = 0;
+    });
+
+    items.forEach(item => {
+      if (item.last_worn_date) {
+        const lastWorn = new Date(item.last_worn_date);
+        const dayDiff = Math.floor((today - lastWorn) / (1000 * 60 * 60 * 24));
+        if (dayDiff >= 0 && dayDiff < 7) {
+          const dayIdx = (6 - dayDiff) % 7;
+          wearCounts[dayIdx] += 1;
+        }
+      }
+    });
+
+    return days.map((day, idx) => ({ day, count: wearCounts[idx] }));
+  };
 
   const maxWear = Math.max(...wearData.map(d => d.count));
 
-  const handleDonate = (item) => {
-    setDonatedItems([...donatedItems, item.id]);
-    alert(`${item.color} ${item.category} donated! ♻️`);
+  const handleDonate = async (item) => {
+    try {
+      await deleteItem(item.id);
+      removeItem(item.id);
+      setDonatedItems([...donatedItems, item.id]);
+      alert(`${item.color} ${item.category} donated! ♻️`);
+    } catch (err) {
+      console.error('Error deleting item:', err);
+      alert('Failed to donate item');
+    }
   };
 
   const handleKeep = () => {
@@ -116,6 +158,16 @@ export default function Insights() {
       )}
     </View>
   );
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.accentAction} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -242,6 +294,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.primary
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header: {
     paddingHorizontal: spacing.container.default,

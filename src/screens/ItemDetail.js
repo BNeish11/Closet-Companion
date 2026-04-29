@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { getDaysAgo, formatDate } from '../utils/helpers';
-import { updateItem, deleteItem, markItemAsWorn } from '../../db/items';
+import { updateItem as updateItemDB, deleteItem, markItemAsWorn } from '../../db/items';
 import { useStore } from '../store';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -20,8 +20,14 @@ import typography from '../styles/typography';
 
 export default function ItemDetail({ route, navigation }) {
   const [loading, setLoading] = useState(false);
-  const { item } = route.params;
+  const [item, setItem] = useState(null);
   const { updateItem: storeUpdateItem, removeItem } = useStore();
+
+  useEffect(() => {
+    if (route?.params?.item) {
+      setItem(route.params.item);
+    }
+  }, [route?.params?.item]);
 
   const daysAgo = item.last_worn_date ? getDaysAgo(item.last_worn_date) : null;
 
@@ -55,6 +61,16 @@ export default function ItemDetail({ route, navigation }) {
       setLoading(false);
     }
   };
+
+  if (!item) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.accentAction} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -200,6 +216,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.primary
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header: {
     flexDirection: 'row',
