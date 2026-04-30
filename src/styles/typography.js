@@ -8,8 +8,8 @@ import colors from './colors';
 
 // Font Family Definitions
 const fontFamily = {
-  title: 'Brasika-Bold', // Custom title font (bold, modern)
-  body: 'OpenSauce-Regular', // Custom body font (clean, readable)
+  title: 'Bodoni', // Custom title font (bold, modern)
+  body: 'Montserrat', // Custom body font (clean, readable)
   mono: 'Courier New', // Monospaced font for code or tags
   //default: 'System',  // Uses platform default (SF Pro Display on iOS, Roboto on Android)
   //mono: 'Courier New'
@@ -55,7 +55,7 @@ const styles = {
   },
 
   heading2: {
-    fontFamily: fontFamily.title,
+    fontFamily: fontFamily.body,
     fontSize: sizes['3xl'],  // 24px
     fontWeight: weights.bold,
     lineHeight: sizes['3xl'] * lineHeights.tight,
@@ -63,7 +63,7 @@ const styles = {
   },
 
   heading3: {
-    fontFamily: fontFamily.title,
+    fontFamily: fontFamily.body,
     fontSize: sizes['2xl'],  // 20px
     fontWeight: weights.semibold,
     lineHeight: sizes['2xl'] * lineHeights.normal,

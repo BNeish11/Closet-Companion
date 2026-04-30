@@ -171,7 +171,7 @@ export default function Navigation() {
         options={{
           tabBarLabel: 'Shop',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name="shopping-bag" color={color} size={size || 24} isFocused={focused} />
+            <TabIcon name="shopping" color={color} size={size || 24} isFocused={focused} />
           )
         }}
       />

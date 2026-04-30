@@ -162,7 +162,7 @@ export default function Dashboard({ navigation }) {
               </Text>
             </Card>
             <Card variant="compact" style={styles.featureCard}>
-              <MaterialCommunityIcons name="shopping-bag" size={24} color={colors.accentSecondary} />
+              <MaterialCommunityIcons name="shopping" size={24} color={colors.accentSecondary} />
               <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Shopping</Text>
               <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
                 Smart recommendations
