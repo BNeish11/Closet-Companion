@@ -164,8 +164,8 @@ export default function AddItem({ navigation }) {
               step={1}
               value={comfortRating}
               onValueChange={setComfortRating}
-              minimumTrackTintColor={colors.accentAction}
-              maximumTrackTintColor={colors.divider}
+              minimumTrackTintColor={colors.accentSecondary}
+              maximumTrackTintColor={colors.border}
             />
             <Text style={[typography.body, { color: colors.accentAction }]}>
               {comfortRating} / 5
@@ -218,39 +218,48 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: spacing.container.default,
+    paddingHorizontal: spacing.padding.medium,
     paddingVertical: spacing.padding.medium,
+    paddingTop: spacing.padding.large,
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider
+    borderBottomColor: colors.border
   },
   backButton: {
-    color: colors.accentAction
+    color: colors.accentSecondary,
+    fontSize: 16,
+    fontWeight: '500'
   },
   content: {
     flex: 1,
-    paddingHorizontal: spacing.container.default,
-    paddingVertical: spacing.padding.medium
+    paddingHorizontal: spacing.padding.medium,
+    paddingVertical: spacing.padding.medium,
+    paddingBottom: spacing.padding.xlarge
   },
   label: {
     marginBottom: spacing.margin.small,
-    color: colors.textSecondary
+    color: colors.textPrimary,
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 0.3
   },
   input: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primaryLight,
     borderWidth: 1,
-    borderColor: colors.divider,
+    borderColor: colors.border,
     borderRadius: spacing.radius.base,
     paddingHorizontal: spacing.padding.medium,
     paddingVertical: spacing.padding.small,
     color: colors.textPrimary,
-    fontSize: 14
+    fontSize: 14,
+    marginBottom: spacing.margin.medium
   },
   picker: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primaryLight,
     borderWidth: 1,
-    borderColor: colors.divider,
+    borderColor: colors.border,
     borderRadius: spacing.radius.base,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginBottom: spacing.margin.medium
   },
   pickerInput: {
     color: colors.textPrimary
@@ -258,7 +267,8 @@ const styles = StyleSheet.create({
   sliderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.gap.md
+    gap: spacing.margin.medium,
+    marginBottom: spacing.margin.medium
   },
   slider: {
     flex: 1,
@@ -267,12 +277,13 @@ const styles = StyleSheet.create({
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.gap.sm
+    gap: spacing.margin.small,
+    marginBottom: spacing.margin.medium
   },
   actions: {
     flexDirection: 'row',
-    gap: spacing.gap.md,
-    marginTop: spacing.margin.lg,
-    marginBottom: spacing.margin.xl
+    gap: spacing.margin.medium,
+    marginTop: spacing.margin.large,
+    marginBottom: spacing.margin.xlarge
   }
 });

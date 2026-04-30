@@ -7,8 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getDaysAgo, formatDate } from '../utils/helpers';
 import { updateItem as updateItemDB, deleteItem, markItemAsWorn } from '../../db/items';
 import { useStore } from '../store';
@@ -181,7 +183,7 @@ export default function ItemDetail({ route, navigation }) {
         {/* Actions */}
         <View style={styles.actions}>
           <Button
-            title="👕 Worn Today"
+            title="Worn Today"
             onPress={handleMarkWorn}
             variant="primary"
             disabled={loading}

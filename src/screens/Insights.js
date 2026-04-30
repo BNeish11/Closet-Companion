@@ -10,6 +10,7 @@ import {
   FlatList,
   ActivityIndicator
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getMostWornItems, getUnusedItems, getItems, deleteItem } from '../../db/items';
 import { useStore } from '../store';
@@ -23,10 +24,10 @@ import typography from '../styles/typography';
 const { width } = Dimensions.get('window');
 
 const achievements = [
-  { id: 1, title: 'Frequent Wearer', icon: '👕', unlocked: true, requirement: '50+ wears' },
-  { id: 2, title: 'Adventurous', icon: '✨', unlocked: true, requirement: '10+ unique outfits' },
-  { id: 3, title: 'Laundry Champion', icon: '🧺', unlocked: false, requirement: '100+ washes' },
-  { id: 4, title: 'Sustainability Star', icon: '♻️', unlocked: false, requirement: '5+ items donated' }
+  { id: 1, title: 'Frequent Wearer', icon: 'hanger', unlocked: true, requirement: '50+ wears' },
+  { id: 2, title: 'Adventurous', icon: 'lightbulb-on', unlocked: true, requirement: '10+ unique outfits' },
+  { id: 3, title: 'Laundry Champion', icon: 'washing-machine', unlocked: false, requirement: '100+ washes' },
+  { id: 4, title: 'Sustainability Star', icon: 'recycle', unlocked: false, requirement: '5+ items donated' }
 ];
 
 export default function Insights() {
@@ -94,7 +95,7 @@ export default function Insights() {
       await deleteItem(item.id);
       removeItem(item.id);
       setDonatedItems([...donatedItems, item.id]);
-      alert(`${item.color} ${item.category} donated! ♻️`);
+      alert(`${item.color} ${item.category} donated! Great choice.`);
     } catch (err) {
       console.error('Error deleting item:', err);
       alert('Failed to donate item');
@@ -144,7 +145,11 @@ export default function Insights() {
 
   const renderAchievement = ({ item }) => (
     <View style={[styles.achievement, !item.unlocked && styles.achievementLocked]}>
-      <Text style={styles.achievementIcon}>{item.icon}</Text>
+      <MaterialCommunityIcons 
+        name={item.icon} 
+        size={32} 
+        color={item.unlocked ? colors.accentSecondary : colors.textMuted} 
+      />
       <Text style={[typography.label, { fontSize: 10, marginTop: spacing.margin.xs }]}>
         {item.title}
       </Text>
@@ -153,7 +158,7 @@ export default function Insights() {
       </Text>
       {!item.unlocked && (
         <View style={styles.lockBadge}>
-          <Text style={{ fontSize: 8 }}>🔒</Text>
+          <MaterialCommunityIcons name="lock" size={12} color={colors.textMuted} />
         </View>
       )}
     </View>
@@ -301,11 +306,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    paddingHorizontal: spacing.container.default,
-    paddingVertical: spacing.padding.large
+    paddingHorizontal: spacing.padding.medium,
+    paddingVertical: spacing.padding.large,
+    paddingTop: spacing.padding.medium
   },
   section: {
-    paddingHorizontal: spacing.container.default,
+    paddingHorizontal: spacing.padding.medium,
     marginBottom: spacing.margin.large
   },
   chartContainer: {
@@ -325,18 +331,23 @@ const styles = StyleSheet.create({
   bar: {
     width: '60%',
     borderRadius: spacing.radius.xs,
+    backgroundColor: colors.accentSecondary,
     marginBottom: spacing.margin.small
   },
   dayLabel: {
-    color: colors.textSecondary
+    color: colors.textSecondary,
+    fontSize: 12,
+    fontWeight: '500'
   },
   horizontalList: {
-    gap: spacing.gap.md,
+    gap: spacing.margin.medium,
     marginTop: spacing.margin.medium
   },
   itemCard: {
     width: 100,
-    padding: spacing.padding.small
+    padding: spacing.padding.small,
+    backgroundColor: colors.surface,
+    borderRadius: spacing.radius.base
   },
   itemContent: {
     alignItems: 'center'

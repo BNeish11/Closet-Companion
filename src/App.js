@@ -18,10 +18,12 @@ try {
 } catch (e) {
   // ignore DOM errors
 }
-import { SafeAreaView, ActivityIndicator, StyleSheet } from 'react-native';
+import { SafeAreaView, ActivityIndicator, StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './navigation';
 import { initializeDatabase } from '../db/client';
+import colors from './styles/colors';
 
 export default function App() {
   const [ready, setReady] = useState(false);
@@ -56,19 +58,38 @@ export default function App() {
 
   if (!ready) {
     return (
-      <SafeAreaView style={styles.container}>
-        <ActivityIndicator size="large" />
-      </SafeAreaView>
+      <LinearGradient
+        colors={[colors.backgroundTop, colors.backgroundBottom]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.container}
+      >
+        <ActivityIndicator size="large" color={colors.accentPrimary} />
+      </LinearGradient>
     );
   }
 
   return (
-    <NavigationContainer>
-      <Navigation />
-    </NavigationContainer>
+    <LinearGradient
+      colors={[colors.backgroundTop, colors.backgroundBottom]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.gradientBg}
+    >
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  gradientBg: {
+    flex: 1
+  }
 });

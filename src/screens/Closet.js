@@ -148,38 +148,43 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary
   },
   header: {
-    paddingHorizontal: spacing.container.default,
+    paddingHorizontal: spacing.padding.medium,
     paddingVertical: spacing.padding.medium,
+    paddingTop: spacing.padding.large,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   filterContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
-    paddingVertical: spacing.padding.small
+    borderBottomColor: colors.border,
+    paddingVertical: spacing.padding.medium,
+    backgroundColor: colors.primary
   },
   filterContent: {
-    paddingHorizontal: spacing.container.default,
-    gap: spacing.gap.sm
+    paddingHorizontal: spacing.padding.medium,
+    gap: spacing.margin.small
   },
   categoryButton: {
     paddingVertical: spacing.padding.compact,
     paddingHorizontal: spacing.padding.medium,
     borderRadius: spacing.radius.full,
-    backgroundColor: colors.surfaceDark,
-    borderWidth: 1,
-    borderColor: colors.divider
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: colors.accentSecondary
   },
   categoryButtonActive: {
-    backgroundColor: colors.accentAction,
-    borderColor: colors.accentAction
+    backgroundColor: 'rgba(56, 189, 248, 0.15)',
+    borderColor: colors.toggleActive
   },
   categoryLabel: {
-    color: colors.textSecondary
+    color: colors.textSecondary,
+    fontSize: 13,
+    fontWeight: '500'
   },
   categoryLabelActive: {
-    color: colors.textOnAccent
+    color: colors.toggleActive,
+    fontWeight: '600'
   },
   loadingContainer: {
     flex: 1,
@@ -190,10 +195,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: spacing.container.default
+    paddingHorizontal: spacing.padding.medium
   },
   emptyText: {
     color: colors.textSecondary,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 16
   }
 });

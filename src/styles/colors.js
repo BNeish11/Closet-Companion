@@ -1,39 +1,51 @@
 /**
  * Closet Companion Design System - Color Tokens
- * Inspired by wireframe palette
+ * Modern dark mobile UI with deep blue base and vibrant accents
  * DO NOT use hex colors directly in components; use semantic names only
  */
 
 export default {
-  // Primary Background Colors (from wireframe)
-  primary: '#2B1E47',        // Deep navy purple
-  primaryLight: '#3D2A5F',   // Medium purple
-  primaryDark: '#1F1633',    // Darker navy purple
+  // Background Colors (NEW: Deep Blue System)
+  backgroundTop: '#0F172A',    // Deep navy (gradient top)
+  backgroundBottom: '#1E293B', // Blue-gray (gradient bottom)
+  primary: '#0F172A',          // Dark navy (primary background)
+  primaryLight: '#1E293B',     // Light blue-gray
 
-  // Surface Colors
-  surface: '#4A3866',        // Card/panel backgrounds (muted purple)
-  surfaceLight: '#5C4A7F',   // Elevated surfaces
-  surfaceDark: '#3D2F57',    // Pressed/hover states
+  // Surface Colors (Cards, Panels)
+  surface: '#1E3A5F',          // True dark blue (card base)
+  surfaceOverlay: 'rgba(255,255,255,0.03)', // Subtle overlay
+  surfaceLight: '#253859',     // Slightly elevated
+  surfaceDark: '#162238',      // Darker for hover
 
-  // Accent Colors (from wireframe)
-  accent: '#E8D7C3',         // Warm cream (primary accent)
-  accentAction: '#D4A574',   // Peachy-salmon (interactive elements)
-  accentSecondary: '#6FA8A8', // Soft teal (secondary accent)
+  // Accent Colors (Vibrant, Energetic)
+  accentPrimary: '#FF9D7B',    // Salmon (button top)
+  accentPrimaryDark: '#FF8660', // Deeper salmon (button bottom)
+  accentSecondary: '#38BDF8',  // Bright blue (chips, highlights)
+  accentTertiary: '#22C55E',   // Green (active states)
 
   // Text Colors
-  textPrimary: '#F5F0EB',    // Off-white/cream (primary text)
-  textSecondary: '#B8A69F',  // Light gray (secondary text)
-  textMuted: '#8B7D72',      // Muted text on surfaces
-  textOnAccent: '#2B1E47',   // Text on light backgrounds
+  textPrimary: '#F1F5F9',      // Light text on dark
+  textSecondary: '#CBD5E1',    // Secondary text (lighter gray)
+  textMuted: '#94A3B8',        // Muted text (dimmer)
+  textOnAccent: '#0F172A',     // Dark text on light accents
 
-  // Semantic Colors
-  success: '#6FA8A8',        // Positive feedback (teal)
-  warning: '#D4A574',        // Warnings (peachy)
-  error: '#E8A6A6',          // Errors (soft red)
-  info: '#6FA8A8',           // Information (teal)
+  // State Colors
+  success: '#22C55E',          // Green (active, positive)
+  warning: '#FF9D7B',          // Salmon (warning)
+  error: '#F87171',            // Red (errors)
+  info: '#38BDF8',             // Blue (information)
+
+  // Toggle States
+  toggleInactive: '#475569',   // Muted gray-blue
+  toggleActive: '#22C55E',     // Vibrant green
+
+  // Icon Colors
+  iconDefault: '#E2E8F0',      // Light gray
+  iconMuted: '#94A3B8',        // Muted
 
   // Utility Colors
-  divider: '#5C4A7F',        // Divider lines
-  overlay: 'rgba(43, 30, 71, 0.5)', // Modal overlay
+  divider: 'rgba(255,255,255,0.08)', // Subtle divider
+  border: 'rgba(255,255,255,0.06)',  // Subtle border
+  overlay: 'rgba(15, 23, 42, 0.5)',  // Dark modal overlay
   transparent: 'transparent'
 };

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getItems, getCleanItems, getDirtyItems } from '../../db/items';
 import { useStore } from '../store';
@@ -147,19 +148,22 @@ export default function Dashboard({ navigation }) {
           <Text style={typography.heading3}>Features</Text>
           <View style={styles.featureGrid}>
             <Card variant="compact" style={styles.featureCard}>
-              <Text style={typography.label}>📊 Insights</Text>
+              <MaterialCommunityIcons name="chart-bar" size={24} color={colors.accentSecondary} />
+              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Insights</Text>
               <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
                 Track wear patterns
               </Text>
             </Card>
             <Card variant="compact" style={styles.featureCard}>
-              <Text style={typography.label}>🎯 Suggestions</Text>
+              <MaterialCommunityIcons name="lightbulb-on" size={24} color={colors.accentSecondary} />
+              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Suggestions</Text>
               <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
                 Get outfit ideas
               </Text>
             </Card>
             <Card variant="compact" style={styles.featureCard}>
-              <Text style={typography.label}>🛍️ Shopping</Text>
+              <MaterialCommunityIcons name="shopping-bag" size={24} color={colors.accentSecondary} />
+              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Shopping</Text>
               <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
                 Smart recommendations
               </Text>
@@ -177,12 +181,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary
   },
   header: {
-    paddingHorizontal: spacing.container.default,
-    paddingVertical: spacing.padding.large
+    paddingHorizontal: spacing.padding.medium,
+    paddingVertical: spacing.padding.large,
+    paddingTop: spacing.padding.medium
   },
   statsCard: {
-    marginHorizontal: spacing.container.default,
-    marginBottom: spacing.margin.large
+    marginHorizontal: spacing.padding.medium,
+    marginBottom: spacing.margin.large,
+    backgroundColor: colors.surface
   },
   statRow: {
     flexDirection: 'row',
@@ -194,27 +200,30 @@ const styles = StyleSheet.create({
     flex: 1
   },
   statNumber: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: colors.accentAction
+    fontSize: 26,
+    fontWeight: '700',
+    color: colors.accentSecondary,
+    letterSpacing: 0.5
   },
   statLabel: {
     color: colors.textSecondary,
-    marginTop: spacing.margin.xs,
-    fontSize: 12
+    marginTop: spacing.margin.compact,
+    fontSize: 12,
+    fontWeight: '500'
   },
   divider: {
     width: 1,
     height: 30,
-    backgroundColor: colors.divider
+    backgroundColor: colors.border
   },
   actionsContainer: {
     flexDirection: 'row',
-    paddingHorizontal: spacing.container.default,
-    marginBottom: spacing.margin.large
+    paddingHorizontal: spacing.padding.medium,
+    marginBottom: spacing.margin.large,
+    gap: spacing.margin.medium
   },
   section: {
-    paddingHorizontal: spacing.container.default,
+    paddingHorizontal: spacing.padding.medium,
     marginBottom: spacing.margin.large
   },
   sectionHeader: {
@@ -230,11 +239,12 @@ const styles = StyleSheet.create({
   },
   featureGrid: {
     flexDirection: 'row',
-    gap: spacing.gap.md,
+    gap: spacing.margin.medium,
     marginTop: spacing.margin.medium
   },
   featureCard: {
     flex: 1,
-    padding: spacing.padding.medium
+    padding: spacing.padding.medium,
+    backgroundColor: colors.surface
   }
 });

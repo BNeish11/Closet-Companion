@@ -1,7 +1,8 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Animated, Pressable } from 'react-native';
 import Dashboard from '../screens/Dashboard';
 import Closet from '../screens/Closet';
 import Suggestions from '../screens/Suggestions';
@@ -73,22 +74,55 @@ const ShoppingStack = () => (
   </Stack.Navigator>
 );
 
+// Custom tab icon component with animation
+function TabIcon({ name, color, size, isFocused }) {
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  
+  useEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: isFocused ? 1.15 : 1,
+      tension: 300,
+      friction: 10,
+      useNativeDriver: true
+    }).start();
+  }, [isFocused]);
+
+  return (
+    <Animated.View style={[{ transform: [{ scale: scaleAnim }] }]}>
+      <MaterialCommunityIcons name={name} color={color} size={size || 24} />
+    </Animated.View>
+  );
+}
+
 export default function Navigation() {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.surface,
-          borderTopColor: colors.divider,
+          backgroundColor: colors.primary,
+          borderTopColor: colors.border,
           borderTopWidth: 1,
-          height: 60,
-          paddingBottom: 8
+          height: 56,
+          paddingTop: 4,
+          paddingBottom: 4,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 4
         },
-        tabBarActiveTintColor: colors.accentAction,
-        tabBarInactiveTintColor: colors.textSecondary,
-        tabBarLabelStyle: [typography.tabLabel, { fontSize: 11 }],
-        tabBarIconStyle: { marginTop: 4 }
+        tabBarActiveTintColor: colors.accentSecondary,
+        tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: [
+          typography.tabLabel,
+          {
+            fontSize: 12,
+            fontWeight: '600',
+            marginTop: 2
+          }
+        ],
+        tabBarIconStyle: { marginTop: 2, marginBottom: 2 }
       }}
     >
       <Tab.Screen
@@ -96,7 +130,9 @@ export default function Navigation() {
         component={DashboardStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>🏠</Text>
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabIcon name="home" color={color} size={size || 24} isFocused={focused} />
+          )
         }}
       />
       <Tab.Screen
@@ -104,7 +140,9 @@ export default function Navigation() {
         component={ClosetStack}
         options={{
           tabBarLabel: 'Closet',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>👕</Text>
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabIcon name="hanger" color={color} size={size || 24} isFocused={focused} />
+          )
         }}
       />
       <Tab.Screen
@@ -112,7 +150,9 @@ export default function Navigation() {
         component={SuggestionsStack}
         options={{
           tabBarLabel: 'Suggest',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>✨</Text>
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabIcon name="lightbulb-on" color={color} size={size || 24} isFocused={focused} />
+          )
         }}
       />
       <Tab.Screen
@@ -120,7 +160,9 @@ export default function Navigation() {
         component={InsightsStack}
         options={{
           tabBarLabel: 'Insights',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>📊</Text>
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabIcon name="chart-bar" color={color} size={size || 24} isFocused={focused} />
+          )
         }}
       />
       <Tab.Screen
@@ -128,7 +170,9 @@ export default function Navigation() {
         component={ShoppingStack}
         options={{
           tabBarLabel: 'Shop',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>🛍️</Text>
+          tabBarIcon: ({ color, size, focused }) => (
+            <TabIcon name="shopping-bag" color={color} size={size || 24} isFocused={focused} />
+          )
         }}
       />
     </Tab.Navigator>

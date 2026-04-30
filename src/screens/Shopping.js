@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getItems, getItemsByCategory } from '../../db/items';
 import Card from '../components/Card';
@@ -339,7 +340,7 @@ export default function Shopping() {
               Found something in store?
             </Text>
             <Button
-              title="📱 Scan Barcode"
+              title="Scan Barcode"
               onPress={() => alert('Opening camera for barcode scan...')}
               variant="primary"
               style={{ marginBottom: spacing.margin.medium }}
