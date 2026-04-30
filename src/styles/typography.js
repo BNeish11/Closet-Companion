@@ -47,7 +47,7 @@ const lineHeights = {
 const styles = {
   // Headings
   heading1: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.title,
     fontSize: sizes['4xl'],  // 32px
     fontWeight: weights.bold,
     lineHeight: sizes['4xl'] * lineHeights.tight,
@@ -55,7 +55,7 @@ const styles = {
   },
 
   heading2: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.title,
     fontSize: sizes['3xl'],  // 24px
     fontWeight: weights.bold,
     lineHeight: sizes['3xl'] * lineHeights.tight,
@@ -63,7 +63,7 @@ const styles = {
   },
 
   heading3: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.title,
     fontSize: sizes['2xl'],  // 20px
     fontWeight: weights.semibold,
     lineHeight: sizes['2xl'] * lineHeights.normal,
@@ -72,7 +72,7 @@ const styles = {
 
   // Body Text
   body: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.base,    // 14px
     fontWeight: weights.normal,
     lineHeight: sizes.base * lineHeights.relaxed,
@@ -80,7 +80,7 @@ const styles = {
   },
 
   bodySmall: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.sm,      // 12px
     fontWeight: weights.normal,
     lineHeight: sizes.sm * lineHeights.relaxed,
@@ -88,7 +88,7 @@ const styles = {
   },
 
   bodyLarge: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.lg,      // 16px
     fontWeight: weights.normal,
     lineHeight: sizes.lg * lineHeights.relaxed,
@@ -97,7 +97,7 @@ const styles = {
 
   // Labels & Captions
   label: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.sm,      // 12px
     fontWeight: weights.semibold,
     lineHeight: sizes.sm * lineHeights.normal,
@@ -107,7 +107,7 @@ const styles = {
   },
 
   caption: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.mono,
     fontSize: sizes.xs,      // 10px
     fontWeight: weights.normal,
     lineHeight: sizes.xs * lineHeights.normal,
@@ -116,7 +116,7 @@ const styles = {
 
   // Button Text
   button: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.base,    // 14px
     fontWeight: weights.semibold,
     lineHeight: sizes.base * lineHeights.normal,
@@ -125,7 +125,7 @@ const styles = {
 
   // Tab Labels
   tabLabel: {
-    fontFamily: fontFamily.default,
+    fontFamily: fontFamily.body,
     fontSize: sizes.xs,      // 10px
     fontWeight: weights.semibold,
     lineHeight: sizes.xs * lineHeights.normal,
