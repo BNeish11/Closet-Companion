@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-// Immediate DOM debug banner to show bundle execution before React mounts (web only)
+// DOM debug banner (unchanged)
 try {
   if (typeof document !== 'undefined') {
     const rootEl = document.getElementById('root');
@@ -9,18 +9,19 @@ try {
       if (!existing) {
         const b = document.createElement('div');
         b.id = 'cc-debug-banner';
-        b.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#fffae6;color:#333;padding:6px 8px;z-index:99999;font-family:sans-serif;border-bottom:1px solid #eee;text-align:center';
+        b.style.cssText =
+          'position:fixed;top:0;left:0;right:0;background:#fffae6;color:#333;padding:6px 8px;z-index:99999;font-family:sans-serif;border-bottom:1px solid #eee;text-align:center';
         b.innerText = 'DEBUG: bundle loaded — App module executing';
         rootEl.appendChild(b);
       }
     }
   }
-} catch (e) {
-  // ignore DOM errors
-}
+} catch (e) {}
+
 import { SafeAreaView, ActivityIndicator, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationContainer } from '@react-navigation/native';
+import * as Font from 'expo-font'; // ✅ ADD THIS
 import Navigation from './navigation';
 import { initializeDatabase } from '../db/client';
 import colors from './styles/colors';
@@ -29,33 +30,37 @@ export default function App() {
   const [ready, setReady] = useState(false);
 
   console.log('App module loaded');
-  try {
-    // Ensure a visible browser console message for web (some RN consoles route to terminal)
-    // eslint-disable-next-line no-undef
-    if (typeof window !== 'undefined' && window && window.console) window.console.log('App module loaded (window)');
-  } catch (e) {}
 
   useEffect(() => {
     let mounted = true;
+
     async function init() {
       try {
+        // ✅ LOAD FONTS HERE
+        await Font.loadAsync({
+          Brasika: require('./assets/fonts/Brasika-Regular.ttf'),
+          OpenSauce: require('./assets/fonts/OpenSauce-Light.ttf'),
+        });
+
+        // ✅ THEN INIT DB
         await initializeDatabase();
       } catch (e) {
-        // ignore for now; surface later
-        // console.warn('DB init failed', e);
+        console.warn('Init error:', e);
       }
-      console.log('DB init finished');
-      try {
-        if (typeof window !== 'undefined' && window && window.console) window.console.log('DB init finished (window)');
-      } catch (e) {}
+
+      console.log('App + Fonts + DB ready');
+
       if (mounted) setReady(true);
     }
+
     init();
+
     return () => {
       mounted = false;
     };
   }, []);
 
+  // ⛔ Prevent render until fonts + DB loaded
   if (!ready) {
     return (
       <LinearGradient
@@ -87,9 +92,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   gradientBg: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

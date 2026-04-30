@@ -8,8 +8,11 @@ import colors from './colors';
 
 // Font Family Definitions
 const fontFamily = {
-  default: 'System',  // Uses platform default (SF Pro Display on iOS, Roboto on Android)
-  mono: 'Courier New'
+  title: 'Brasika-Bold', // Custom title font (bold, modern)
+  body: 'OpenSauce-Regular', // Custom body font (clean, readable)
+  mono: 'Courier New', // Monospaced font for code or tags
+  //default: 'System',  // Uses platform default (SF Pro Display on iOS, Roboto on Android)
+  //mono: 'Courier New'
 };
 
 // Size Scale (in pixels)
