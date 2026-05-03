@@ -1,5 +1,5 @@
 // ADD THESE IMPORTS AT TOP
-import { useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 export default function Dashboard({ navigation }) {
   const [loading, setLoading] = useState(false);

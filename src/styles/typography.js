@@ -8,11 +8,10 @@ import colors from './colors';
 
 // Font Family Definitions
 const fontFamily = {
-  title: 'Bodoni', // Custom title font (bold, modern)
-  body: 'Montserrat', // Custom body font (clean, readable)
-  mono: 'Courier New', // Monospaced font for code or tags
-  //default: 'System',  // Uses platform default (SF Pro Display on iOS, Roboto on Android)
-  //mono: 'Courier New'
+  title: 'BodoniModa_700Bold',
+  body: 'Montserrat_400Regular',
+  bodyBold: 'Montserrat_700Bold',
+  mono: 'Courier New',
 };
 
 // Size Scale (in pixels)

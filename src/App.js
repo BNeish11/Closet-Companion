@@ -1,42 +1,43 @@
 import React, { useEffect, useState } from 'react';
 
-// DOM debug banner (unchanged)
+// Debug banner (unchanged)
 try {
   if (typeof document !== 'undefined') {
     const rootEl = document.getElementById('root');
-    if (rootEl) {
-      const existing = document.getElementById('cc-debug-banner');
-      if (!existing) {
-        const b = document.createElement('div');
-        b.id = 'cc-debug-banner';
-        b.style.cssText =
-          'position:fixed;top:0;left:0;right:0;background:#fffae6;color:#333;padding:6px 8px;z-index:99999;font-family:sans-serif;border-bottom:1px solid #eee;text-align:center';
-        b.innerText = 'DEBUG: bundle loaded — App module executing';
-        rootEl.appendChild(b);
-      }
+    if (rootEl && !document.getElementById('cc-debug-banner')) {
+      const b = document.createElement('div');
+      b.id = 'cc-debug-banner';
+      b.style.cssText =
+        'position:fixed;top:0;left:0;right:0;background:#fffae6;color:#333;padding:6px 8px;z-index:99999;font-family:sans-serif;border-bottom:1px solid #eee;text-align:center';
+      b.innerText = 'DEBUG: bundle loaded — App module executing';
+      rootEl.appendChild(b);
     }
   }
 } catch (e) {}
 
-import { SafeAreaView, ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationContainer } from '@react-navigation/native';
-import * as Font from 'expo-font'; // ✅ ADD THIS
 import Navigation from './navigation';
 import { initializeDatabase } from '../db/client';
 import colors from './styles/colors';
+
+// ✅ GOOGLE FONTS (NO TTF FILES)
 import {
   useFonts,
   BodoniModa_400Regular,
-  BodoniModa_700Bold
+  BodoniModa_700Bold,
 } from '@expo-google-fonts/bodoni-moda';
 
 import {
   Montserrat_400Regular,
-  Montserrat_700Bold
+  Montserrat_700Bold,
 } from '@expo-google-fonts/montserrat';
 
 export default function App() {
+  const [ready, setReady] = useState(false);
+
+  // ✅ Load fonts safely
   const [fontsLoaded] = useFonts({
     BodoniModa_400Regular,
     BodoniModa_700Bold,
@@ -44,36 +45,19 @@ export default function App() {
     Montserrat_700Bold,
   });
 
-  if (!fontsLoaded) return null;
-
-  return <YourApp />;
-}
-
-export default function App() {
-  const [ready, setReady] = useState(false);
-
-  console.log('App module loaded');
-
   useEffect(() => {
     let mounted = true;
 
     async function init() {
       try {
-        // ✅ LOAD FONTS HERE
-        await Font.loadAsync({
-          Brasika: require('./assets/fonts/Brasika-Regular.ttf'),
-          OpenSauce: require('./assets/fonts/OpenSauce-Light.ttf'),
-        });
-
-        // ✅ THEN INIT DB
+        // ✅ Only initialize DB (fonts handled separately)
         await initializeDatabase();
       } catch (e) {
         console.warn('Init error:', e);
       }
 
-      console.log('App + Fonts + DB ready');
-
       if (mounted) setReady(true);
+      console.log('App ready');
     }
 
     init();
@@ -83,8 +67,11 @@ export default function App() {
     };
   }, []);
 
-  // ⛔ Prevent render until fonts + DB loaded
-  if (!ready) {
+  // ✅ Graceful fallback:
+  // App loads EVEN IF fonts fail
+  const isAppReady = ready;
+
+  if (!isAppReady) {
     return (
       <LinearGradient
         colors={[colors.backgroundTop, colors.backgroundBottom]}
