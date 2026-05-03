@@ -25,6 +25,29 @@ import * as Font from 'expo-font'; // ✅ ADD THIS
 import Navigation from './navigation';
 import { initializeDatabase } from '../db/client';
 import colors from './styles/colors';
+import {
+  useFonts,
+  BodoniModa_400Regular,
+  BodoniModa_700Bold
+} from '@expo-google-fonts/bodoni-moda';
+
+import {
+  Montserrat_400Regular,
+  Montserrat_700Bold
+} from '@expo-google-fonts/montserrat';
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    BodoniModa_400Regular,
+    BodoniModa_700Bold,
+    Montserrat_400Regular,
+    Montserrat_700Bold,
+  });
+
+  if (!fontsLoaded) return null;
+
+  return <YourApp />;
+}
 
 export default function App() {
   const [ready, setReady] = useState(false);

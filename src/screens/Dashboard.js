@@ -1,24 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useFocusEffect } from '@react-navigation/native';
-import { getItems, getCleanItems, getDirtyItems } from '../../db/items';
-import { useStore } from '../store';
-import Grid from '../components/Grid';
-import ItemTile from '../components/ItemTile';
-import Card from '../components/Card';
-import Button from '../components/Button';
-import colors from '../styles/colors';
-import spacing from '../styles/spacing';
-import typography from '../styles/typography';
+// ADD THESE IMPORTS AT TOP
+import { useCallback } from 'react';
 
 export default function Dashboard({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -27,11 +8,15 @@ export default function Dashboard({ navigation }) {
   const [dirtyCount, setDirtyCount] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
+  // ✅ NEW STATE
+  const [weather, setWeather] = useState(null);
+
   const { items, setItems } = useStore();
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       loadData();
+      loadWeather(); // ✅ NEW
     }, [])
   );
 
@@ -48,12 +33,25 @@ export default function Dashboard({ navigation }) {
       setCleanCount(clean.length);
       setDirtyCount(dirty.length);
 
-      // Show first 6 items as preview
       setClosetPreview((itemsData || []).slice(0, 6));
     } catch (err) {
       console.error('Error loading dashboard data:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // ✅ WEATHER MOCK (READY FOR API)
+  const loadWeather = async () => {
+    try {
+      setWeather({
+        temp: 68,
+        condition: 'Partly Cloudy',
+        high: 75,
+        low: 55
+      });
+    } catch (e) {
+      console.error('Weather error', e);
     }
   };
 
@@ -66,12 +64,30 @@ export default function Dashboard({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        
         {/* Header */}
         <View style={styles.header}>
           <Text style={typography.heading1}>Closet Companion</Text>
         </View>
 
-        {/* Quick Stats */}
+        {/* 🌦️ WEATHER CARD */}
+        <View style={styles.section}>
+          <Card variant="spacious" style={styles.statsCard}>
+            {weather ? (
+              <View>
+                <Text style={typography.heading3}>{weather.temp}°</Text>
+                <Text style={typography.body}>{weather.condition}</Text>
+                <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
+                  High {weather.high}° • Low {weather.low}°
+                </Text>
+              </View>
+            ) : (
+              <ActivityIndicator color={colors.accentAction} />
+            )}
+          </Card>
+        </View>
+
+        {/* Quick Stats (UNCHANGED) */}
         <Card variant="spacious" style={styles.statsCard}>
           <View style={styles.statRow}>
             <View style={styles.stat}>
@@ -91,7 +107,24 @@ export default function Dashboard({ navigation }) {
           </View>
         </Card>
 
-        {/* Quick Actions */}
+        {/* 📸 CAMERA CARD */}
+        <View style={styles.section}>
+          <Card variant="spacious" style={styles.statsCard}>
+            <Text style={typography.heading3}>Add with Camera</Text>
+            <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
+              Capture clothing and auto-tag items
+            </Text>
+
+            <Button
+              title="Open Camera"
+              onPress={() => navigation.navigate('Camera')}
+              variant="primary"
+              style={{ marginTop: spacing.margin.medium }}
+            />
+          </Card>
+        </View>
+
+        {/* Quick Actions (UNCHANGED) */}
         <View style={styles.actionsContainer}>
           <Button
             title="+ Add Item"
@@ -107,12 +140,14 @@ export default function Dashboard({ navigation }) {
           />
         </View>
 
-        {/* Closet Preview */}
+        {/* Closet Preview (UNCHANGED) */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={typography.heading3}>Recent Items</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Closet')}>
-              <Text style={[typography.body, { color: colors.accentAction }]}>View All →</Text>
+              <Text style={[typography.body, { color: colors.accentAction }]}>
+                View All →
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -143,108 +178,7 @@ export default function Dashboard({ navigation }) {
           )}
         </View>
 
-        {/* Features Preview */}
-        <View style={styles.section}>
-          <Text style={typography.heading3}>Features</Text>
-          <View style={styles.featureGrid}>
-            <Card variant="compact" style={styles.featureCard}>
-              <MaterialCommunityIcons name="chart-bar" size={24} color={colors.accentSecondary} />
-              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Insights</Text>
-              <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
-                Track wear patterns
-              </Text>
-            </Card>
-            <Card variant="compact" style={styles.featureCard}>
-              <MaterialCommunityIcons name="lightbulb-on" size={24} color={colors.accentSecondary} />
-              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Suggestions</Text>
-              <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
-                Get outfit ideas
-              </Text>
-            </Card>
-            <Card variant="compact" style={styles.featureCard}>
-              <MaterialCommunityIcons name="shopping" size={24} color={colors.accentSecondary} />
-              <Text style={[typography.label, { marginTop: spacing.margin.small }]}>Shopping</Text>
-              <Text style={[typography.caption, { marginTop: spacing.margin.small }]}>
-                Smart recommendations
-              </Text>
-            </Card>
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary
-  },
-  header: {
-    paddingHorizontal: spacing.padding.medium,
-    paddingVertical: spacing.padding.large,
-    paddingTop: spacing.padding.medium
-  },
-  statsCard: {
-    marginHorizontal: spacing.padding.medium,
-    marginBottom: spacing.margin.large,
-    backgroundColor: colors.surface
-  },
-  statRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  stat: {
-    alignItems: 'center',
-    flex: 1
-  },
-  statNumber: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: colors.accentSecondary,
-    letterSpacing: 0.5
-  },
-  statLabel: {
-    color: colors.textSecondary,
-    marginTop: spacing.margin.compact,
-    fontSize: 12,
-    fontWeight: '500'
-  },
-  divider: {
-    width: 1,
-    height: 30,
-    backgroundColor: colors.border
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: spacing.padding.medium,
-    marginBottom: spacing.margin.large,
-    gap: spacing.margin.medium
-  },
-  section: {
-    paddingHorizontal: spacing.padding.medium,
-    marginBottom: spacing.margin.large
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.margin.medium
-  },
-  loadingContainer: {
-    height: 200,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  featureGrid: {
-    flexDirection: 'row',
-    gap: spacing.margin.medium,
-    marginTop: spacing.margin.medium
-  },
-  featureCard: {
-    flex: 1,
-    padding: spacing.padding.medium,
-    backgroundColor: colors.surface
-  }
-});
